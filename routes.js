@@ -3,7 +3,14 @@ import Template from "./screens/selectTemplate";
 import Ask from "./screens/askPage";
 import { createAppContainer } from "react-navigation";
 import Suceess from "./screens/success";
+import ThongKe from "./screens/ThongKe";
 const screens = {
+  Dashboard: {
+    screen: ThongKe,
+    navigationOptions: {
+      title: "Dashboard",
+    },
+  },
   Template: {
     screen: Template,
     navigationOptions: {
