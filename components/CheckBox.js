@@ -10,8 +10,26 @@ export default class CheckBox extends Component {
       err: "",
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props && nextProps.valid == false && nextProps) {
+      this.setState(
+        {
+          err: nextProps.valid ? "" : "Vui lòng chọn ít nhất 1 lựa chọn",
+        },
+        () => {
+          console.log(this.state, this.props.valid);
+        }
+      );
+    }
+  }
   onSelectionsChange = (selected) => {
     this.setState({ selected }, () => {
+      this.setState({
+        err: this.state.selected.length
+          ? ""
+          : "Vui lòng chọn ít nhất 1 lựa chọn",
+      });
+
       let reduce = this.state.selected.reduce((sum, item, index) => {
         return sum + (index !== 0 ? "," : "") + item.value;
       }, "");
@@ -23,7 +41,13 @@ export default class CheckBox extends Component {
   };
   render() {
     return (
-      <View style={{ ...global.inputGroup, ...global.flex }}>
+      <View
+        style={
+          this.state.err
+            ? [global.inputGroup, global.flex, global.err]
+            : [global.inputGroup, global.flex]
+        }
+      >
         <View style={{ width: "100%" }}>
           <Text style={global.titleCauHoi}>
             {this.props.data.TieuDe}{" "}
@@ -37,7 +61,7 @@ export default class CheckBox extends Component {
             selectedItems={this.state.selected}
             onSelectionsChange={this.onSelectionsChange}
           />
-          <Text>{this.state.err}</Text>
+          <Text style={{ color: "red", height: 18 }}>{this.state.err}</Text>
         </View>
       </View>
     );
