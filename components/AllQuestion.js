@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TextBox from "./TextBox";
-import { View, Button, Text, Alert } from "react-native";
+import { View, Text } from "react-native";
 import Radio from "./Radio";
 import CheckBox from "./CheckBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -25,7 +25,7 @@ export default class AllQuestion extends Component {
       if (i == max) {
         break;
       } else {
-        mang.push({ ...data[i], valid: false });
+        mang.push({ ...data[i], valid: true });
       }
     }
     this.setState(
@@ -84,9 +84,12 @@ export default class AllQuestion extends Component {
       return item.IDCauHoi == data.IDCauHoi;
     });
     if (i !== -1) {
-      cauhoi[i] = data
+      cauhoi[i] = data.CauTraLoi
         ? { ...cauhoi[i], valid: true }
         : { ...cauhoi[i], valid: false };
+      this.setState({ cauhoi }, () => {
+        console.log(this.state);
+      });
     }
 
     let index = noiDungCauHoi.findIndex((item) => {
@@ -119,7 +122,25 @@ export default class AllQuestion extends Component {
       valid,
     });
   };
-  checkData = () => {};
+  checkData = () => {
+    let { cauhoi, noiDungCauHoi } = this.state;
+    cauhoi = cauhoi.map((item) => {
+      let index = noiDungCauHoi.findIndex(
+        (i) => item.IDCauHoi == i.IDCauHoi && i.CauTraLoi
+      );
+      return index !== -1
+        ? { ...item, valid: true }
+        : { ...item, valid: false };
+    });
+    this.setState(
+      {
+        cauhoi,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
   render() {
     return (
       <View style={{ position: "relative" }}>
@@ -146,7 +167,7 @@ export default class AllQuestion extends Component {
                       this.props.submitQuestion(this.state.noiDungCauHoi);
                       this.props.submitData();
                     } else {
-                      Alert.alert("Vui lòng kiểm tra thông tin");
+                      this.checkData();
                     }
                   }}
                 >
@@ -160,7 +181,6 @@ export default class AllQuestion extends Component {
                       this.props.submitQuestion(this.state.noiDungCauHoi);
                     } else {
                       this.checkData();
-                      Alert.alert("Vui lòng kiểm tra thông tin");
                     }
                   }}
                 >

@@ -31,7 +31,13 @@ export default class Radio extends Component {
   };
   render() {
     return (
-      <View style={{ ...global.inputGroup, ...global.flex }}>
+      <View
+        style={
+          this.state.err
+            ? [global.inputGroup, global.flex, global.err]
+            : [global.inputGroup, global.flex]
+        }
+      >
         <View style={{ width: "100%" }}>
           <Text style={global.titleCauHoi}>
             {this.props.data.TieuDe}{" "}

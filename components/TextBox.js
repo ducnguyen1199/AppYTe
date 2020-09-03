@@ -9,8 +9,17 @@ export default class TextBox extends Component {
       err: "",
     };
   }
-  componentDidMount() {
-    console.log(this.props.valid);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props && nextProps.valid == false && nextProps) {
+      this.setState(
+        {
+          err: nextProps.valid ? "" : "vui lòng nhập thông tin",
+        },
+        () => {
+          console.log(this.state, this.props.valid);
+        }
+      );
+    }
   }
   Onchange = (value) => {
     this.props.datatext({
@@ -31,7 +40,13 @@ export default class TextBox extends Component {
   };
   render() {
     return (
-      <View style={[global.inputGroup, global.flex]}>
+      <View
+        style={
+          this.state.err
+            ? [global.inputGroup, global.flex, global.err]
+            : [global.inputGroup, global.flex]
+        }
+      >
         <View style={{ width: "100%" }}>
           <Text style={global.titleCauHoi}>
             {this.props.data.TieuDe}{" "}
@@ -44,7 +59,7 @@ export default class TextBox extends Component {
             style={styles.input}
             onChangeText={this.Onchange}
           />
-          <Text style={{ color: "red" }}>{this.state.err}</Text>
+          <Text style={{ color: "red", height: 18 }}>{this.state.err}</Text>
         </View>
       </View>
     );

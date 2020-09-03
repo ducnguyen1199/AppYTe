@@ -9,22 +9,56 @@ export default class User extends Component {
     this.state = {
       noiDungCauHoi: [],
       valid: false,
-      loaiCauHoi: [
-        { name: "HoTen", IDCauHoi: 0, TieuDe: "Họ và tên", BatBuoc: true },
-        { name: "MSNV", IDCauHoi: 1, TieuDe: "Mã số nhân viên", BatBuoc: true },
-        { name: "Email", IDCauHoi: 2, TieuDe: "Địa chỉ Email", BatBuoc: true },
+      cauhoi: [
+        {
+          name: "HoTen",
+          IDCauHoi: 0,
+          TieuDe: "Họ và tên",
+          BatBuoc: true,
+          valid: true,
+        },
+        {
+          name: "MSNV",
+          IDCauHoi: 1,
+          TieuDe: "Mã số nhân viên",
+          BatBuoc: true,
+          valid: true,
+        },
+        {
+          name: "Email",
+          IDCauHoi: 2,
+          TieuDe: "Địa chỉ Email",
+          BatBuoc: true,
+          valid: true,
+        },
       ],
     };
   }
   renderUser = () => {
-    return this.state.loaiCauHoi.map((item, index) => (
-      <TextBox key={index} datatext={this.text} data={item} />
+    return this.state.cauhoi.map((item, index) => (
+      <TextBox
+        key={index}
+        datatext={this.text}
+        data={item}
+        valid={item.valid}
+      />
     ));
   };
   text = (data) => {
-    console.log(data);
     let noiDungCauHoiUpdate = this.state.noiDungCauHoi;
 
+    let { cauhoi } = this.state;
+    let i = cauhoi.findIndex((item) => {
+      return item.IDCauHoi == data.IDCauHoi;
+    });
+    if (i !== -1) {
+      cauhoi[i] = data.CauTraLoi
+        ? { ...cauhoi[i], valid: true }
+        : { ...cauhoi[i], valid: false };
+      this.setState({ cauhoi }, () => {
+        console.log(this.state);
+      });
+    }
     let index = this.state.noiDungCauHoi.findIndex((item) => {
       return item.IDCauHoi == data.IDCauHoi;
     });
@@ -49,11 +83,29 @@ export default class User extends Component {
     });
     this.setState({
       valid:
-        this.state.loaiCauHoi.length === this.state.noiDungCauHoi.length &&
+        this.state.cauhoi.length === this.state.noiDungCauHoi.length &&
         index === -1,
     });
   };
-
+  checkData = () => {
+    let { cauhoi, noiDungCauHoi } = this.state;
+    cauhoi = cauhoi.map((item) => {
+      let index = noiDungCauHoi.findIndex(
+        (i) => item.IDCauHoi == i.IDCauHoi && i.CauTraLoi
+      );
+      return index !== -1
+        ? { ...item, valid: true }
+        : { ...item, valid: false };
+    });
+    this.setState(
+      {
+        cauhoi,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
   render() {
     return (
       <View style={{ position: "relative" }}>
@@ -113,7 +165,7 @@ export default class User extends Component {
                       this.props.changePage(2);
                       this.props.submitUser(this.state.noiDungCauHoi);
                     } else {
-                      Alert.alert("Vui lòng kiểm tra thông tin");
+                      this.checkData();
                     }
                   }}
                 >
