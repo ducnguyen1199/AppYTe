@@ -29,6 +29,9 @@ export const global = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: "white",
   },
+  err: {
+    borderColor: "rgb(217, 48, 37)",
+  },
   titleCauHoi: {
     textAlign: "left",
     width: "100%",
