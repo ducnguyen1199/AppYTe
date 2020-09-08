@@ -1,16 +1,9 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Template from "./screens/selectTemplate";
-import Ask from "./screens/askPage";
-import { createAppContainer } from "react-navigation";
-import Suceess from "./screens/success";
-import ThongKe from "./screens/ThongKe";
+import Template from "../screens/selectTemplate";
+import Ask from "../screens/askPage";
+import Suceess from "../screens/success";
+import ThongKe from "../screens/ThongKe";
 const screens = {
-  Dashboard: {
-    screen: ThongKe,
-    navigationOptions: {
-      title: "Dashboard",
-    },
-  },
   Template: {
     screen: Template,
     navigationOptions: {
@@ -29,8 +22,14 @@ const screens = {
       title: "Confirm",
     },
   },
+  Dashboard: {
+    screen: ThongKe,
+    navigationOptions: {
+      title: "Dashboard",
+    },
+  },
 };
-const HomeStack = createStackNavigator(screens, {
+const TemplateStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTitleAlign: "left",
     headerTintColor: "white",
@@ -38,4 +37,4 @@ const HomeStack = createStackNavigator(screens, {
   },
 });
 
-export default createAppContainer(HomeStack);
+export default TemplateStack;

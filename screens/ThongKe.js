@@ -18,6 +18,7 @@ import Template from "./Template";
 import Cauhoi from "./CauHoi";
 import CauTraLoi from "./CauTraLoi";
 import CauTraLoiText from "./CauTraLoiText";
+import api from "../config";
 export default class thongke extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +45,7 @@ export default class thongke extends Component {
   getChuDe = () => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/ApiChuDe`,
+      url: api + `api/ApiChuDe`,
     })
       .then((result) => {
         this.setState({
@@ -59,7 +60,7 @@ export default class thongke extends Component {
   getTemplate = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/Templates/${id}`,
+      url: api + `api/Templates/${id}`,
     })
       .then((result) => {
         console.log(result.data);
@@ -75,7 +76,7 @@ export default class thongke extends Component {
   getCauHoi = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/CauHoi/${id}`,
+      url: api + `api/CauHoi/${id}`,
     })
       .then((result) => {
         this.setState({
@@ -89,7 +90,7 @@ export default class thongke extends Component {
   getCauTraLoi = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/ApiTemplate_4/${id}`,
+      url: api + `api/ApiTemplate_4/${id}`,
     })
       .then((result) => {
         this.setState({
@@ -104,7 +105,7 @@ export default class thongke extends Component {
   getCauTraLoiText = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/ApiTemplate_text/${id}`,
+      url: api + `api/ApiTemplate_text/${id}`,
     })
       .then((result) => {
         this.setState({
@@ -118,7 +119,7 @@ export default class thongke extends Component {
   getCauTraLoiRadio = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/ApiTemplate_radio/${id}`,
+      url: api + `api/ApiTemplate_radio/${id}`,
     })
       .then((result) => {
         this.setState({
@@ -132,7 +133,7 @@ export default class thongke extends Component {
   getCauTraLoiCheckBox = (id) => {
     Axios({
       method: "GET",
-      url: `https://76e17bf2e870.ngrok.io/api/ApiTemplate_checkbox/7`,
+      url: api + `api/ApiTemplate_checkbox/7`,
     })
       .then((result) => {
         console.log(result.data);
@@ -215,7 +216,8 @@ export default class thongke extends Component {
           animation="fade"
           color="#448AFF"
         />
-        <ScrollView style={{ width: "100%" }}>
+
+        <ScrollView style={{ width: "100%" }} nestedScrollEnabled={true}>
           <View style={global.wrapper}>
             <View style={global.inputGroup}>
               <Text style={{ fontSize: 20, fontWeight: "600" }}>

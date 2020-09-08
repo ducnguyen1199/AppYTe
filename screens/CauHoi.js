@@ -11,21 +11,24 @@ class CauHoi extends Component {
   };
   render() {
     return (
-      <ScrollView style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}>
-        <View style={global.inputGroup}>
-          <View style={styles.contentParent}>
-            <View style={styles.title}>
-              <Text>Câu hỏi</Text>
-            </View>
+      <View style={global.inputGroup}>
+        <View style={styles.contentParent}>
+          <View style={{ borderBottomColor: "#eeeeee", borderBottomWidth: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>Câu hỏi</Text>
+          </View>
+          <ScrollView
+            style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}
+            nestedScrollEnabled={true}
+          >
             <View style={styles.content}>
               {this.renderhtml()}
               <Text style={{ marginTop: 10 }}>
                 Tổng số Câu hỏi: {this.props.data.length}
               </Text>
             </View>
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

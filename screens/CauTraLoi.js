@@ -24,21 +24,28 @@ class CauTraLoi extends Component {
   render() {
     return (
       <SafeAreaView>
-        <ScrollView style={{ height: 300, marginTop: 20 }}>
-          <View style={global.inputGroup}>
-            <View style={styles.contentParent}>
-              <View style={styles.title}>
-                <Text>{this.props.title}</Text>
-              </View>
+        <View style={global.inputGroup}>
+          <View style={styles.contentParent}>
+            <View
+              style={{ borderBottomColor: "#eeeeee", borderBottomWidth: 1 }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "500" }}>
+                {this.props.title}
+              </Text>
+            </View>
+            <ScrollView
+              style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}
+              nestedScrollEnabled={true}
+            >
               <View style={styles.content}>
                 {this.renderhtml()}
                 <Text style={{ marginTop: 10 }}>
                   Tổng số {this.props.title} : {this.props.data.length}
                 </Text>
               </View>
-            </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }

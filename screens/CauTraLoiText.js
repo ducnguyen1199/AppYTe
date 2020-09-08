@@ -10,21 +10,26 @@ class CauTraLoiText extends Component {
   };
   render() {
     return (
-      <ScrollView style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}>
-        <View style={global.inputGroup}>
-          <View style={styles.contentParent}>
-            <View style={styles.title}>
-              <Text>{this.props.data.TenCauHoi}</Text>
-            </View>
+      <View style={global.inputGroup}>
+        <View style={styles.contentParent}>
+          <View style={{ borderBottomColor: "#eeeeee", borderBottomWidth: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+              {this.props.data.TenCauHoi}
+            </Text>
+          </View>
+          <ScrollView
+            style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}
+            nestedScrollEnabled={true}
+          >
             <View style={styles.content}>
               {this.renderhtml()}
               <Text style={{ marginTop: 10 }}>
                 Tổng số câu trả lời : {this.props.data.SoLuong}
               </Text>
             </View>
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

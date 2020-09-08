@@ -16,6 +16,14 @@ export default class Suceess extends Component {
             <Text
               style={{ color: "#0000ee" }}
               onPress={() => {
+                this.props.navigation.navigate("Dashboard");
+              }}
+            >
+              Xem kêt quả
+            </Text>
+            <Text
+              style={{ color: "#0000ee" }}
+              onPress={() => {
                 this.props.navigation.navigate("Template");
               }}
             >

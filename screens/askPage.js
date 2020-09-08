@@ -37,7 +37,7 @@ export default class AskPage extends Component {
       let temPlateLocal = this.props.navigation.getParam("template");
       Axios({
         method: "GET",
-        url: `https://76e17bf2e870.ngrok.io/api/CauHoi/${temPlateLocal.IDTemplate}`,
+        url: `https://650cb31940d1.ngrok.io/api/CauHoi/${temPlateLocal.IDTemplate}`,
       })
         .then((result) => {
           this.setState({
@@ -127,7 +127,7 @@ export default class AskPage extends Component {
     setTimeout(() => {
       Axios({
         method: "POST",
-        url: "https://76e17bf2e870.ngrok.io/api/ApiCauTraLoi",
+        url: "https://650cb31940d1.ngrok.io/api/ApiCauTraLoi",
         data: this.state.values,
       })
         .then((result) => {

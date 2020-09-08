@@ -12,8 +12,10 @@ class Template extends Component {
       <ScrollView style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}>
         <View style={global.inputGroup}>
           <View style={styles.contentParent}>
-            <View style={styles.title}>
-              <Text>Template</Text>
+            <View
+              style={{ borderBottomColor: "#eeeeee", borderBottomWidth: 1 }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "500" }}>Template</Text>
             </View>
             <View style={styles.content}>
               {this.renderhtml()}
