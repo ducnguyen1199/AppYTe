@@ -6,6 +6,7 @@ import User from "../components/User";
 import Axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import AllQuestion from "../components/AllQuestion";
+import api from "../config";
 export default class AskPage extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ export default class AskPage extends Component {
       let temPlateLocal = this.props.navigation.getParam("template");
       Axios({
         method: "GET",
-        url: `https://650cb31940d1.ngrok.io/api/CauHoi/${temPlateLocal.IDTemplate}`,
+        url: api + `api/CauHoi/${temPlateLocal.IDTemplate}`,
       })
         .then((result) => {
           this.setState({
@@ -127,7 +128,7 @@ export default class AskPage extends Component {
     setTimeout(() => {
       Axios({
         method: "POST",
-        url: "https://650cb31940d1.ngrok.io/api/ApiCauTraLoi",
+        url: api + "api/ApiCauTraLoi",
         data: this.state.values,
       })
         .then((result) => {

@@ -5,8 +5,11 @@ import TemplateStack from "./TempateStack";
 import Dashboard from "./Dashboard";
 
 const RootDrawerNavigator = createDrawerNavigator({
-  Home: {
+  chuDe: {
     screen: HomeStack,
+    navigationOptions: {
+      title: "Chủ đề",
+    },
   },
   Template: {
     screen: TemplateStack,

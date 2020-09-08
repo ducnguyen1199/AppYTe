@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { global } from "../style/global";
 import Axios from "axios";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Spinner from "react-native-loading-spinner-overlay";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import api from "../config";
 import HTML from "react-native-render-html";
 export default class SelectTemplate extends Component {
@@ -23,10 +23,10 @@ export default class SelectTemplate extends Component {
     };
   }
   componentDidMount() {
-    this.getTemplate(+this.props.navigation.getParam("chuDe"));
+    this.getTemplate(this.props.navigation.getParam("chuDe"));
   }
-  getTemplate = (id) => {
-    let uri = id ? `api/Templates/${id}` : ``;
+  getTemplate = (chuDe) => {
+    let uri = chuDe ? `api/Templates/${chuDe.IDChuDe}` : `api/ApiTemplate/`;
     console.log(api + uri);
     Axios({
       method: "GET",
@@ -54,14 +54,10 @@ export default class SelectTemplate extends Component {
           <TouchableOpacity
             onPress={() => {
               console.log("ok");
-              console.log({
+              this.props.navigation.navigate("Ask", {
                 chuDe: +this.props.navigation.getParam("chuDe"),
                 template: item,
               });
-              // this.props.navigation.navigate("Ask", {
-              //   chuDe: +this.props.navigation.getParam("chuDe"),
-              //   template: item,
-              // });
             }}
             key={index}
             style={global.box}

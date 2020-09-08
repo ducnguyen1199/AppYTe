@@ -108,25 +108,7 @@ export default class User extends Component {
   };
   render() {
     return (
-      <View style={{ position: "relative" }}>
-        <View
-          style={{
-            position: "absolute",
-            backgroundColor: "#2196f3",
-            padding: 5,
-            width: "100%",
-            top: -30,
-            left: 0,
-            zIndex: 99999,
-            paddingHorizontal: 22,
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          }}
-        >
-          <Text style={{ fontSize: 18, color: "white" }}>
-            THÔNG TIN NGƯỜI DÙNG
-          </Text>
-        </View>
+      <View>
         {this.renderUser()}
         <View style={global.flex}>
           <View style={{ width: "45%" }}>

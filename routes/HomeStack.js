@@ -4,35 +4,39 @@ import Suceess from "../screens/success";
 import ThongKe from "../screens/ThongKe";
 import SelectChuDe from "../screens/SelectChuDe";
 import SelectTemplate from "../screens/selectTemplate";
+import Header from "../components/Header";
+import React from "react";
 const screens = {
   SelectChuDe: {
     screen: SelectChuDe,
-    navigationOptions: {
-      title: "SelectChuDe",
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: () => <Header title={"Chủ đề"} navigation={navigation} />,
+      };
     },
   },
   SelectTemp: {
     screen: SelectTemplate,
     navigationOptions: {
-      title: "SelectTemp",
+      title: "Template",
     },
   },
   Ask: {
     screen: Ask,
     navigationOptions: {
-      title: "Questions",
+      title: "Câu hỏi",
     },
   },
   Success: {
     screen: Suceess,
     navigationOptions: {
-      title: "Confirm",
+      title: "Xác nhận",
     },
   },
   Dashboard: {
     screen: ThongKe,
     navigationOptions: {
-      title: "Dashboard",
+      title: "Thống kê",
     },
   },
 };
