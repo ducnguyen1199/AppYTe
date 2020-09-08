@@ -18,6 +18,8 @@ import Template from "./Template";
 import Cauhoi from "./CauHoi";
 import CauTraLoi from "./CauTraLoi";
 import CauTraLoiText from "./CauTraLoiText";
+import CauTraLoiRadio from "./CauTraLoiRadio";
+import CauTraLoiCheck from "./CauTraLoiCheck";
 import api from "../config";
 export default class thongke extends Component {
   constructor(props) {
@@ -63,7 +65,6 @@ export default class thongke extends Component {
       url: api + `api/Templates/${id}`,
     })
       .then((result) => {
-        console.log(result.data);
         this.setState({
           template: result.data,
           loadingTemp: false,
@@ -122,9 +123,14 @@ export default class thongke extends Component {
       url: api + `api/ApiTemplate_radio/${id}`,
     })
       .then((result) => {
-        this.setState({
-          CauTraLoiRadio: result.data,
-        });
+        this.setState(
+          {
+            CauTraLoiRadio: result.data,
+          },
+          () => {
+            console.log(this.state.CauTraLoiRadio);
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -133,10 +139,9 @@ export default class thongke extends Component {
   getCauTraLoiCheckBox = (id) => {
     Axios({
       method: "GET",
-      url: api + `api/ApiTemplate_checkbox/7`,
+      url: api + `api/ApiTemplate_checkbox/${id}`,
     })
       .then((result) => {
-        console.log(result.data);
         this.setState({
           CauTraLoiCheckBox: result.data,
         });
@@ -153,7 +158,6 @@ export default class thongke extends Component {
     ));
   };
   renderDataTemplate = () => {
-    console.log(this.state.template);
     return this.state.template.map((item, index) => (
       <Picker.Item
         label={item.TenTemplate}
@@ -202,6 +206,17 @@ export default class thongke extends Component {
   renderhtmlCauTraLoiText = () => {
     return this.state.CauTraLoiText.map((item, index) => {
       return <CauTraLoiText key={index} data={item} />;
+    });
+  };
+  renderhtmlCauTraLoiRadio = () => {
+    return this.state.CauTraLoiRadio.map((item, index) => {
+      return <CauTraLoiRadio key={index} data={item} />;
+    });
+  };
+  renderhtmlCauTraLoiCheck = () => {
+    console.log(this.state.CauTraLoiCheckBox);
+    return this.state.CauTraLoiCheckBox.map((item, index) => {
+      return <CauTraLoiCheck key={index} data={item} />;
     });
   };
   render() {
@@ -289,6 +304,8 @@ export default class thongke extends Component {
                 <CauTraLoi data={this.state.CauTraLoi} title="MSNV" />
                 <CauTraLoi data={this.state.CauTraLoi} title="Email" />
                 {this.renderhtmlCauTraLoiText()}
+                {this.renderhtmlCauTraLoiRadio()}
+                {this.renderhtmlCauTraLoiCheck()}
               </View>
             ) : (
               <Text></Text>

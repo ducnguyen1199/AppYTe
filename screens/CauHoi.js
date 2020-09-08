@@ -4,7 +4,6 @@ import { global } from "../style/global";
 
 class CauHoi extends Component {
   renderhtml = () => {
-    console.log(this.props.data);
     return this.props.data.map((item, index) => {
       return <Text key={index}>{item.TieuDe}</Text>;
     });
@@ -12,7 +11,7 @@ class CauHoi extends Component {
   render() {
     return (
       <View style={global.inputGroup}>
-        <View style={styles.contentParent}>
+        <View>
           <View style={{ borderBottomColor: "#eeeeee", borderBottomWidth: 1 }}>
             <Text style={{ fontSize: 18, fontWeight: "500" }}>Câu hỏi</Text>
           </View>
