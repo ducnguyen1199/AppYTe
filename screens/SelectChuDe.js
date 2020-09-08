@@ -38,7 +38,7 @@ export default class SelectChuDe extends Component {
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate("SelectTemp", {
-                chuDe: item.IDChuDe,
+                chuDe: item,
               });
             }}
             key={index}

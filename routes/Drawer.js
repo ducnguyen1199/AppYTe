@@ -3,8 +3,11 @@ import { createAppContainer } from "react-navigation";
 import HomeStack from "./HomeStack";
 import TemplateStack from "./TempateStack";
 const RootDrawerNavigator = createDrawerNavigator({
-  Home: {
+  chuDe: {
     screen: HomeStack,
+    navigationOptions: {
+      title: "Chủ đề",
+    },
   },
   Template: {
     screen: TemplateStack,
