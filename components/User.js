@@ -55,9 +55,7 @@ export default class User extends Component {
       cauhoi[i] = data.CauTraLoi
         ? { ...cauhoi[i], valid: true }
         : { ...cauhoi[i], valid: false };
-      this.setState({ cauhoi }, () => {
-        console.log(this.state);
-      });
+      this.setState({ cauhoi });
     }
     let index = this.state.noiDungCauHoi.findIndex((item) => {
       return item.IDCauHoi == data.IDCauHoi;
@@ -97,14 +95,9 @@ export default class User extends Component {
         ? { ...item, valid: true }
         : { ...item, valid: false };
     });
-    this.setState(
-      {
-        cauhoi,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      cauhoi,
+    });
   };
   render() {
     return (

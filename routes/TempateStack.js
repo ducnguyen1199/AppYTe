@@ -6,7 +6,7 @@ import SelectTemplate from "../screens/selectTemplate";
 import Header from "../components/Header";
 import React from "react";
 const screens = {
-  Template: {
+  TemplateStack: {
     screen: SelectTemplate,
     navigationOptions: ({ navigation }) => {
       return {
@@ -24,14 +24,18 @@ const screens = {
   },
   Success: {
     screen: Suceess,
-    navigationOptions: {
-      title: "Xác nhận",
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: () => (
+          <Header title={"Xác nhận"} navigation={navigation} />
+        ),
+      };
     },
   },
-  Dashboard: {
+  ThongKe: {
     screen: ThongKe,
     navigationOptions: {
-      title: "Thông kê",
+      title: "Kết quả",
     },
   },
 };
@@ -39,7 +43,7 @@ const TemplateStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTitleAlign: "left",
     headerTintColor: "white",
-    headerStyle: { backgroundColor: "#1E88E5" },
+    headerStyle: { backgroundColor: "#2b289a" },
   },
 });
 

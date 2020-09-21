@@ -17,8 +17,8 @@ export default class AskPage extends Component {
         HoTen: "",
         MSNV: "",
         Email: "",
-        IDChuDe: "",
-        IDTemplate: "",
+        IDChuDe: 0,
+        IDTemplate: 0,
         CauTraLoi_ChiTiet: [],
       },
       endPage: 1,
@@ -81,7 +81,7 @@ export default class AskPage extends Component {
   renderDataPage = () => {
     return (
       <View style={global.wrapper}>
-        <View style={this.state.indexPage === 1 ? "" : { display: "none" }}>
+        <View style={{ display: this.state.indexPage !== 1 ? "none" : "flex" }}>
           <User
             endPage={this.state.endPage}
             changePage={this.changePage}
@@ -124,7 +124,10 @@ export default class AskPage extends Component {
   };
   submitData = () => {
     this.setState({ isLoading: true });
-    this.props.navigation.navigate("Success");
+    this.props.navigation.navigate("Success", {
+      idChuDe: this.state.values.IDChuDe,
+      idTemplate: this.state.values.IDTemplate,
+    });
     setTimeout(() => {
       Axios({
         method: "POST",

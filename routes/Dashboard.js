@@ -1,12 +1,17 @@
 import { createStackNavigator } from "react-navigation-stack";
 
 import ThongKe from "../screens/ThongKe";
-
+import React from "react";
+import Header from "../components/Header";
 const screens = {
-  Dashboard: {
+  DashboardStack: {
     screen: ThongKe,
-    navigationOptions: {
-      title: "Dashboard",
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: () => (
+          <Header title={"Thống kê"} navigation={navigation} />
+        ),
+      };
     },
   },
 };
@@ -14,7 +19,7 @@ const Dashboard = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTitleAlign: "left",
     headerTintColor: "white",
-    headerStyle: { backgroundColor: "#1E88E5" },
+    headerStyle: { backgroundColor: "#2b289a" },
   },
 });
 

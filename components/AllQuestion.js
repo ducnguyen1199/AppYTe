@@ -28,14 +28,9 @@ export default class AllQuestion extends Component {
         mang.push({ ...data[i], valid: true });
       }
     }
-    this.setState(
-      {
-        cauhoi: mang,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      cauhoi: mang,
+    });
   };
 
   renderQuestion = () => {
@@ -78,7 +73,6 @@ export default class AllQuestion extends Component {
   };
 
   dataPost = (data) => {
-    console.log(data);
     let { noiDungCauHoi, cauhoi } = this.state;
     let i = cauhoi.findIndex((item) => {
       return item.IDCauHoi == data.IDCauHoi;
@@ -87,9 +81,7 @@ export default class AllQuestion extends Component {
       cauhoi[i] = data.CauTraLoi
         ? { ...cauhoi[i], valid: true }
         : { ...cauhoi[i], valid: false };
-      this.setState({ cauhoi }, () => {
-        console.log(this.state);
-      });
+      this.setState({ cauhoi });
     }
 
     let index = noiDungCauHoi.findIndex((item) => {
@@ -110,10 +102,15 @@ export default class AllQuestion extends Component {
     let index = this.state.noiDungCauHoi.findIndex((item) => {
       return item.CauTraLoi === "";
     });
-    if (
-      this.state.cauhoi.length === this.state.noiDungCauHoi.length &&
-      index === -1
-    ) {
+
+    let mangTrue = this.state.cauhoi.filter((item) => {
+      return item.BatBuoc === true;
+    });
+
+    let mangNoiDungCauHoi = this.state.noiDungCauHoi.filter((item) => {
+      return item.BatBuoc === true;
+    });
+    if (mangTrue.length === mangNoiDungCauHoi.length && index === -1) {
       valid = true;
     } else {
       valid = false;
@@ -125,21 +122,20 @@ export default class AllQuestion extends Component {
   checkData = () => {
     let { cauhoi, noiDungCauHoi } = this.state;
     cauhoi = cauhoi.map((item) => {
-      let index = noiDungCauHoi.findIndex(
-        (i) => item.IDCauHoi == i.IDCauHoi && i.CauTraLoi
-      );
-      return index !== -1
-        ? { ...item, valid: true }
-        : { ...item, valid: false };
-    });
-    this.setState(
-      {
-        cauhoi,
-      },
-      () => {
-        console.log(this.state);
+      if (!item.BatBuoc) {
+        return { ...item, valid: true };
+      } else {
+        let index = noiDungCauHoi.findIndex(
+          (i) => item.IDCauHoi == i.IDCauHoi && i.CauTraLoi
+        );
+        return index !== -1
+          ? { ...item, valid: true }
+          : { ...item, valid: false };
       }
-    );
+    });
+    this.setState({
+      cauhoi,
+    });
   };
   render() {
     return (
@@ -153,7 +149,7 @@ export default class AllQuestion extends Component {
                   this.props.changePage(this.props.page);
                 }}
               >
-                <Text style={global.btnText}>Quay lai</Text>
+                <Text style={global.btnText}>Quay lại</Text>
               </TouchableOpacity>
             </View>
           </View>

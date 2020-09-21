@@ -27,21 +27,15 @@ export default class SelectTemplate extends Component {
   }
   getTemplate = (chuDe) => {
     let uri = chuDe ? `api/Templates/${chuDe.IDChuDe}` : `api/ApiTemplate/`;
-    console.log(api + uri);
     Axios({
       method: "GET",
       url: api + uri,
     })
       .then((result) => {
-        this.setState(
-          {
-            template: result.data,
-            loadingTemp: false,
-          },
-          () => {
-            console.log(this.state);
-          }
-        );
+        this.setState({
+          template: result.data,
+          loadingTemp: false,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -53,9 +47,10 @@ export default class SelectTemplate extends Component {
         <View style={{ width: "100%" }} key={index}>
           <TouchableOpacity
             onPress={() => {
-              console.log("ok");
               this.props.navigation.navigate("Ask", {
-                chuDe: +this.props.navigation.getParam("chuDe"),
+                chuDe: this.props.navigation.getParam("chuDe")
+                  ? +this.props.navigation.getParam("chuDe").IDChuDe
+                  : 1,
                 template: item,
               });
             }}

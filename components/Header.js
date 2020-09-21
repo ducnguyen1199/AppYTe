@@ -6,18 +6,43 @@ export default class Header extends Component {
   render() {
     return (
       <View style={global.flex}>
-        <Icon
-          style={{ fontSize: 22, color: "white", fontWeight: "600" }}
-          name="navicon"
-          onPress={() => {
-            console.log("ok");
-            this.props.navigation.openDrawer();
+        {this.props.title !== "Xác nhận" ? (
+          <Icon
+            style={{
+              fontSize: 30,
+              color: "white",
+              fontWeight: "600",
+            }}
+            name="navicon"
+            onPress={() => {
+              this.props.navigation.openDrawer();
+            }}
+          />
+        ) : (
+          <></>
+        )}
+
+        <Text
+          style={{
+            fontSize: 22,
+            color: "white",
+            fontWeight: "600",
           }}
-        />
-        <Text style={{ fontSize: 22, color: "white", fontWeight: "600" }}>
+        >
           {this.props.title}
         </Text>
-        <Text></Text>
+        {this.props.title !== "Xác nhận" ? (
+          <Icon
+            style={{
+              fontSize: 30,
+              color: "transparent",
+              fontWeight: "600",
+            }}
+            name="navicon"
+          />
+        ) : (
+          <></>
+        )}
       </View>
     );
   }

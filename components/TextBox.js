@@ -11,32 +11,64 @@ export default class TextBox extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props && nextProps.valid == false && nextProps) {
-      this.setState(
-        {
-          err: nextProps.valid ? "" : "vui lòng nhập thông tin",
-        },
-        () => {
-          console.log(this.state, this.props.valid);
-        }
-      );
+      this.setState({
+        err: nextProps.valid ? "" : this.checkErr(this.state.value, nextProps),
+      });
     }
   }
   Onchange = (value) => {
-    this.props.datatext({
-      CauTraLoi: value,
-      IDCauHoi: this.props.data.IDCauHoi,
-      name: this.props.data.name ? this.props.data.name : null,
-    });
     this.setState(
       {
         value,
+        err: this.checkErr(value, this.props),
       },
       () => {
-        this.setState({
-          err: this.props.valid ? "" : "vui lòng nhập thông tin",
+        this.props.datatext({
+          CauTraLoi: this.props.data.name && this.state.err ? "" : value,
+          IDCauHoi: this.props.data.IDCauHoi,
+          name: this.props.data.name ? this.props.data.name : null,
+          BatBuoc: this.props.data.BatBuoc,
         });
       }
     );
+  };
+  checkErr = (value, props) => {
+    let err = "";
+    if (!this.props.data.name) {
+      err = props.valid || value ? "" : "Vui lòng nhập thông tin";
+    } else {
+      if (value !== "") {
+        switch (this.props.data.name) {
+          case "Email":
+            if (
+              !value.match(
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+                  "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+              )
+            ) {
+              err = "email không hợp lệ";
+            }
+            break;
+          case "HoTen":
+            if (
+              !value.match(
+                "^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" +
+                  "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆẾỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
+                  "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"
+              )
+            ) {
+              err = "Họ tên của bạn không hợp lệ";
+            }
+            break;
+          case "MSNV":
+          default:
+            break;
+        }
+      } else {
+        err = "Vui lòng nhập thông tin";
+      }
+    }
+    return err;
   };
   render() {
     return (

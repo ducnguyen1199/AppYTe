@@ -1,26 +1,26 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import {
   View,
   Picker,
-  Button,
   ScrollView,
   Text,
-  Linking,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { global } from "../style/global";
 import Axios from "axios";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import Spinner from "react-native-loading-spinner-overlay";
-
-import Chude from "./Chude";
-import Template from "./Template";
 import Cauhoi from "./CauHoi";
 import CauTraLoi from "./CauTraLoi";
 import CauTraLoiText from "./CauTraLoiText";
 import CauTraLoiRadio from "./CauTraLoiRadio";
 import CauTraLoiCheck from "./CauTraLoiCheck";
 import api from "../config";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+var scrollYPos = 0;
+var heightWindow = Dimensions.get("window").height - 150;
+var nextScreen = 1;
 export default class thongke extends Component {
   constructor(props) {
     super(props);
@@ -31,19 +31,48 @@ export default class thongke extends Component {
       templateSelected: -1,
       loadingChuDe: true,
       loadingTemp: false,
+      loadingCauHoi: false,
       CauHoi: [],
       CauTraLoi: [],
       CauTraLoiText: [],
       CauTraLoiRadio: [],
       CauTraLoiCheckBox: [],
+      isDetail: false,
+      hideBackTop: true,
     };
   }
   componentDidMount() {
-    this.getChuDe();
+    if (
+      this.props.navigation.getParam("idChuDe") &&
+      this.props.navigation.getParam("idTemplate")
+    ) {
+      let idTemplate = this.props.navigation.getParam("idTemplate");
+      this.setState({
+        loadingChuDe: false,
+        loadingTemp: false,
+        loadingCauHoi: true,
+        isDetail: true,
+        templateSelected: idTemplate,
+      });
+      this.getCauHoi(idTemplate);
+      this.getCauTraLoi(idTemplate);
+      this.getCauTraLoiText(idTemplate);
+      this.getCauTraLoiRadio(idTemplate);
+      this.getCauTraLoiCheckBox(idTemplate);
+    } else {
+      this.getChuDe();
+    }
   }
-
-  //  Get api
-
+  scrollTop = (isBackTop) => {
+    if (isBackTop) {
+      nextScreen = 1;
+      this.scroller.scrollTo({ x: 0, y: 1 });
+      this.setState({ hideBackTop: true });
+    } else {
+      scrollYPos = heightWindow * nextScreen;
+      this.scroller.scrollTo({ x: 0, y: scrollYPos });
+    }
+  };
   getChuDe = () => {
     Axios({
       method: "GET",
@@ -80,9 +109,14 @@ export default class thongke extends Component {
       url: api + `api/CauHoi/${id}`,
     })
       .then((result) => {
-        this.setState({
-          CauHoi: result.data,
-        });
+        this.setState(
+          {
+            CauHoi: result.data,
+          },
+          () => {
+            this.checkResponse();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -94,24 +128,33 @@ export default class thongke extends Component {
       url: api + `api/ApiTemplate_4/${id}`,
     })
       .then((result) => {
-        this.setState({
-          CauTraLoi: result.data,
-        });
+        this.setState(
+          {
+            CauTraLoi: result.data,
+          },
+          () => {
+            this.checkResponse();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   getCauTraLoiText = (id) => {
     Axios({
       method: "GET",
       url: api + `api/ApiTemplate_text/${id}`,
     })
       .then((result) => {
-        this.setState({
-          CauTraLoiText: result.data,
-        });
+        this.setState(
+          {
+            CauTraLoiText: result.data,
+          },
+          () => {
+            this.checkResponse();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -128,7 +171,7 @@ export default class thongke extends Component {
             CauTraLoiRadio: result.data,
           },
           () => {
-            console.log(this.state.CauTraLoiRadio);
+            this.checkResponse();
           }
         );
       })
@@ -142,16 +185,37 @@ export default class thongke extends Component {
       url: api + `api/ApiTemplate_checkbox/${id}`,
     })
       .then((result) => {
-        this.setState({
-          CauTraLoiCheckBox: result.data,
-        });
+        this.setState(
+          {
+            CauTraLoiCheckBox: result.data,
+          },
+          () => {
+            this.checkResponse();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  //
+  checkResponse = () => {
+    if (
+      this.state.CauHoi.length &&
+      this.state.CauTraLoi.length &&
+      this.state.CauTraLoiText.length &&
+      this.state.CauTraLoiRadio.length &&
+      this.state.CauTraLoiCheckBox.length
+    )
+      this.setState({
+        loadingCauHoi: !(
+          this.state.CauHoi.length &&
+          this.state.CauTraLoi.length &&
+          this.state.CauTraLoiText.length &&
+          this.state.CauTraLoiRadio.length &&
+          this.state.CauTraLoiCheckBox.length
+        ),
+      });
+  };
   renderDataChuDe = () => {
     return this.state.chuDe.map((item, index) => (
       <Picker.Item label={item.TenChuDe} value={item.IDChuDe} key={index} />
@@ -183,6 +247,13 @@ export default class thongke extends Component {
     this.setState(
       {
         templateSelected: value,
+        loadingTemp: false,
+        loadingCauHoi: true,
+        CauHoi: [],
+        CauTraLoi: [],
+        CauTraLoiText: [],
+        CauTraLoiRadio: [],
+        CauTraLoiCheckBox: [],
       },
       () => {
         this.getCauHoi(value);
@@ -201,11 +272,9 @@ export default class thongke extends Component {
       ),
     });
   };
-
-  //
   renderhtmlCauTraLoiText = () => {
     return this.state.CauTraLoiText.map((item, index) => {
-      return <CauTraLoiText key={index} data={item} />;
+      return <CauTraLoiText data={item} key={index} />;
     });
   };
   renderhtmlCauTraLoiRadio = () => {
@@ -214,7 +283,6 @@ export default class thongke extends Component {
     });
   };
   renderhtmlCauTraLoiCheck = () => {
-    console.log(this.state.CauTraLoiCheckBox);
     return this.state.CauTraLoiCheckBox.map((item, index) => {
       return <CauTraLoiCheck key={index} data={item} />;
     });
@@ -224,93 +292,122 @@ export default class thongke extends Component {
     return (
       <View style={global.container}>
         <Spinner
-          visible={this.state.loadingTemp || this.state.loadingChuDe}
+          visible={
+            this.state.loadingTemp ||
+            this.state.loadingChuDe ||
+            this.state.loadingCauHoi
+          }
           textStyle={styles.spinnerTextStyle}
           size="large"
           overlayColor="#000000b3"
           animation="fade"
           color="#448AFF"
         />
-
-        <ScrollView style={{ width: "100%" }} nestedScrollEnabled={true}>
-          <View style={global.wrapper}>
-            <View style={global.inputGroup}>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                Tờ khai báo tự nguyện công ty GSOFT và GOBRANDING
-              </Text>
-              <Text style={{ marginTop: 10, color: "#484848" }}>
-                Bằng cách khai báo y tế trên ứng dụng NCOVI, mỗi chúng ta đã
-                đóng góp phần công sức vào công cuộc phòng và chống đại dịch cúm
-                Corona, giúp các cơ quan nhà nước, Bộ Y Tế có thể thống kê, kiểm
-                soát tình hình và thực hiện các biện pháp cách ly chính xác và
-                nhanh chóng, trách lây lan. Trước tình hình đại dịch cúm Corona
-                hay Covid-19 đang lây lan ngày một nhanh hơn, chiều 9/3, Bộ Y Tế
-                kết hợp Bộ Thông tin và Truyền thông đã tiến hành mở dịch vụ
-                khai báo y tế trên ứng dụng NCOVI(hay nCoV) và Vietnam Health
-                Declaration hỗ trợ khai báo y tế, nâng cao công tác phòng chống
-                dịch. Các bạn có thể tải app tại 2 địa chỉ:
-              </Text>
+        {!this.state.hideBackTop ? (
+          <View
+            style={{
+              position: "absolute",
+              bottom: 5,
+              right: 5,
+              alignSelf: "flex-end",
+              padding: 5,
+              backgroundColor: "#59b900",
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+              zIndex: 999,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                this.scrollTop(true);
+              }}
+            >
               <Text
-                style={{ color: "#0000ee" }}
-                onPress={() =>
-                  Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.vnptit.innovation.ncovi"
-                  )
-                }
-              >
-                https://play.google.com/store/apps/details?id=com.vnptit.innovation.ncovi
-              </Text>
-              <Text
-                style={{ color: "#0000ee" }}
-                onPress={() =>
-                  Linking.openURL(
-                    "https://apps.apple.com/vn/app/ncovi/id1501934178"
-                  )
-                }
-              >
-                https://apps.apple.com/vn/app/ncovi/id1501934178
-              </Text>
-              <Text style={{ color: "#d93025", marginTop: 10 }}>*Bắt buộc</Text>
-            </View>
-            <View style={{ ...global.inputGroup, ...global.flex }}>
-              <Picker
-                selectedValue={chuDeSelected}
-                style={{ width: "40%" }}
-                onValueChange={(itemValue) => {
-                  this.onChangeChuDe(itemValue);
+                style={{
+                  fontSize: 30,
+                  color: "white",
+                  lineHeight: 40,
+                  textAlign: "center",
                 }}
               >
-                <Picker.Item label="Chủ đề" value={-1} />
-                {this.renderDataChuDe()}
-              </Picker>
-              <Picker
-                selectedValue={templateSelected}
-                style={{ width: "40%" }}
-                onValueChange={(itemValue) => {
-                  this.onChangeTemplate(itemValue);
-                }}
-                enabled={this.state.template.length !== 0}
-              >
-                <Picker.Item label="Template" value={-1} />
-                {this.renderDataTemplate()}
-              </Picker>
-            </View>
-            {this.state.templateSelected !== -1 ? (
-              <View style={styles.content}>
-                <Chude data={this.state.chuDe} />
-                <Template data={this.state.template} />
-                <Cauhoi data={this.state.CauHoi} />
-                <CauTraLoi data={this.state.CauTraLoi} title="Hoten" />
-                <CauTraLoi data={this.state.CauTraLoi} title="MSNV" />
-                <CauTraLoi data={this.state.CauTraLoi} title="Email" />
-                {this.renderhtmlCauTraLoiText()}
-                {this.renderhtmlCauTraLoiRadio()}
-                {this.renderhtmlCauTraLoiCheck()}
-              </View>
-            ) : (
-              <Text></Text>
-            )}
+                ↑
+              </Text>
+            </TouchableOpacity>
           </View>
+        ) : (
+          <View></View>
+        )}
+        <ScrollView
+          style={{ width: "100%" }}
+          nestedScrollEnabled={true}
+          ref={(scroller) => {
+            this.scroller = scroller;
+          }}
+          onScroll={(event) => {
+            let currentY = event.nativeEvent.contentOffset.y + 1;
+            nextScreen = parseInt(currentY / heightWindow) + 1;
+            if (currentY >= heightWindow && this.state.hideBackTop) {
+              this.setState({ hideBackTop: false });
+            } else if (currentY < heightWindow && !this.state.hideBackTop) {
+              this.setState({ hideBackTop: true });
+            }
+          }}
+        >
+          {!this.state.isDetail ? (
+            <View style={[global.wrapper, styles.selectOption]}>
+              <View style={global.inputGroup}>
+                <Picker
+                  selectedValue={chuDeSelected}
+                  onValueChange={(itemValue) => {
+                    this.onChangeChuDe(itemValue);
+                  }}
+                >
+                  <Picker.Item
+                    color={"#585858"}
+                    label="Vui lòng chọn chủ đề"
+                    value={-1}
+                  />
+                  {this.renderDataChuDe()}
+                </Picker>
+              </View>
+              {this.state.template.length ? (
+                <View style={global.inputGroup}>
+                  <Picker
+                    selectedValue={templateSelected}
+                    onValueChange={(itemValue) => {
+                      this.onChangeTemplate(itemValue);
+                    }}
+                  >
+                    <Picker.Item
+                      color={"#585858"}
+                      label="Vui lòng chọn Template"
+                      value={-1}
+                    />
+                    {this.renderDataTemplate()}
+                  </Picker>
+                </View>
+              ) : (
+                <View></View>
+              )}
+            </View>
+          ) : (
+            <></>
+          )}
+
+          {this.state.templateSelected !== -1 ? (
+            <View style={global.wrapper}>
+              <Cauhoi data={this.state.CauHoi} />
+              <CauTraLoi data={this.state.CauTraLoi} title="Hoten" />
+              <CauTraLoi data={this.state.CauTraLoi} title="MSNV" />
+              <CauTraLoi data={this.state.CauTraLoi} title="Email" />
+              {this.renderhtmlCauTraLoiText()}
+              {this.renderhtmlCauTraLoiRadio()}
+              {this.renderhtmlCauTraLoiCheck()}
+            </View>
+          ) : (
+            <></>
+          )}
         </ScrollView>
       </View>
     );
@@ -320,8 +417,9 @@ const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: "#FFF",
   },
-  content: {
-    margin: 10,
-    marginTop: 30,
+  selectOption: {
+    backgroundColor: "#e6040430",
+    marginTop: 0,
+    paddingTop: 10,
   },
 });

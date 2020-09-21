@@ -12,14 +12,9 @@ export default class CheckBox extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props && nextProps.valid == false && nextProps) {
-      this.setState(
-        {
-          err: nextProps.valid ? "" : "Vui lòng chọn ít nhất 1 lựa chọn",
-        },
-        () => {
-          console.log(this.state, this.props.valid);
-        }
-      );
+      this.setState({
+        err: nextProps.valid ? "" : "Vui lòng chọn ít nhất 1 lựa chọn",
+      });
     }
   }
   onSelectionsChange = (selected) => {
@@ -36,6 +31,7 @@ export default class CheckBox extends Component {
       this.props.datacheck({
         IDCauHoi: this.props.data.IDCauHoi,
         CauTraLoi: reduce,
+        BatBuoc: this.props.data.BatBuoc,
       });
     });
   };

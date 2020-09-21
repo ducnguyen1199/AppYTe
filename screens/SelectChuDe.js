@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { ImageBackground, Text, View } from "react-native";
 import Axios from "axios";
 import api from "../config";
 import { global } from "../style/global";

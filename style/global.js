@@ -3,7 +3,7 @@ export const global = StyleSheet.create({
   container: {
     width: "100%",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#00000001",
     justifyContent: "center",
     alignItems: "flex-start",
   },
@@ -26,7 +26,7 @@ export const global = StyleSheet.create({
     borderColor: "transparent",
     borderRadius: 6,
     marginBottom: 12,
-    paddingHorizontal: 22,
+    paddingHorizontal: 15,
     paddingVertical: 15,
     backgroundColor: "white",
     shadowColor: "#fff",
@@ -69,8 +69,7 @@ export const global = StyleSheet.create({
   },
   btnText: {
     color: "white",
-    fontSize: 14,
-    textTransform: "uppercase",
+    fontSize: 18,
     textAlign: "center",
   },
   box: {

@@ -3,9 +3,17 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { global } from "../style/global";
 
 class CauHoi extends Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps != this.props;
+  }
   renderhtml = () => {
     return this.props.data.map((item, index) => {
-      return <Text key={index}>{item.TieuDe}</Text>;
+      return (
+        <Text key={index}>
+          <Text style={{ color: "#5f5f5f" }}>{index + 1}. </Text>
+          {item.TieuDe}
+        </Text>
+      );
     });
   };
   render() {

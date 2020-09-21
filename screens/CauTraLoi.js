@@ -1,21 +1,43 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { global } from "../style/global";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 class CauTraLoi extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false,
+    };
+  }
   renderhtml = () => {
     switch (this.props.title) {
       case "Hoten":
         return this.props.data.map((item, index) => {
-          return <Text key={index}> {item.Hoten}</Text>;
+          return (
+            <Text key={index}>
+              <Text style={{ color: "#5f5f5f" }}>{index + 1}. </Text>
+              {item.Hoten}
+            </Text>
+          );
         });
       case "MSNV":
         return this.props.data.map((item, index) => {
-          return <Text key={index}> {item.MSNV}</Text>;
+          return (
+            <Text key={index}>
+              <Text style={{ color: "#5f5f5f" }}>{index + 1}. </Text>
+              {item.MSNV}
+            </Text>
+          );
         });
       case "Email":
         return this.props.data.map((item, index) => {
-          return <Text key={index}> {item.Email}</Text>;
+          return (
+            <Text key={index}>
+              <Text style={{ color: "#5f5f5f" }}>{index + 1}. </Text>
+              {item.Email}
+            </Text>
+          );
         });
       default:
         break;
@@ -33,17 +55,42 @@ class CauTraLoi extends Component {
                 {this.props.title}
               </Text>
             </View>
-            <ScrollView
-              style={{ minHeight: 100, maxHeight: 300, marginTop: 20 }}
-              nestedScrollEnabled={true}
+            <View
+              style={{
+                minHeight: 100,
+                maxHeight: this.state.show ? 2000 : 205,
+                marginTop: 20,
+                overflow: "hidden",
+              }}
             >
-              <View style={styles.content}>
-                {this.renderhtml()}
-                <Text style={{ marginTop: 10 }}>
-                  Tổng số {this.props.title} : {this.props.data.length}
-                </Text>
-              </View>
-            </ScrollView>
+              <View style={styles.content}>{this.renderhtml()}</View>
+            </View>
+            {this.props.data > 10 && this.state.show ? (
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ show: true });
+                }}
+              >
+                <View style={{ width: "100%", padding: 10 }}>
+                  <Text style={{ textAlign: "center", color: "#5f5f5f" }}>
+                    {!this.state.show ? "Xem thêm..." : "Ẩn bớt..."}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
+
+            <Text
+              style={{
+                marginTop: 10,
+                paddingTop: 10,
+                borderTopWidth: 1,
+                borderTopColor: "#eeeeee",
+              }}
+            >
+              Tổng số {this.props.title} : {this.props.data.length}
+            </Text>
           </View>
         </View>
       </SafeAreaView>

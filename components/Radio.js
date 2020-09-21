@@ -12,14 +12,17 @@ export default class Radio extends Component {
     };
   }
   componentDidMount() {
-    this.setState({
-      options: this.props.data.NoiDung,
-      value: this.props.data.NoiDung[0].value,
-    });
-    this.props.dataradio({
-      IDCauHoi: this.props.data.IDCauHoi,
-      CauTraLoi: this.props.data.NoiDung[0].value,
-    });
+    if (this.props.data.NoiDung[0]) {
+      this.setState({
+        options: this.props.data.NoiDung,
+        value: this.props.data.NoiDung[0].value,
+      });
+      this.props.dataradio({
+        IDCauHoi: this.props.data.IDCauHoi,
+        CauTraLoi: this.props.data.NoiDung[0].value,
+        BatBuoc: this.props.data.BatBuoc,
+      });
+    }
   }
   onChangeValue = (value) => {
     this.setState({ value }, () => {
